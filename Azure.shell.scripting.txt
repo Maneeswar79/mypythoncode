@@ -1,0 +1,46 @@
+az group create -l westus -n MyResourceGroup
+az group create -l eastus -n azurescript
+
+##########Vnet###########
+az network vnet create -g azurescript -n azurescript-Vnet --address-prefix 10.10.0.0/16 \
+--subnet-name azurescript-subnet1 --subnet-prefix 10.10.1.0/24 -l eastus
+
+#########Subnet##########
+az network Vnet subnet create -g azurescript --vnet-name azurescript-Vnet -n azurescript-subnet2 \
+--address-prefixes 10.10.2.0/24
+
+#########Network security group###########
+az network nsg create -g azurescript -n azurescript-Nsg
+
+
+#########Network security rule#############
+az network nsg rule create -g azurescript --nsg-name azurescript-Nsg -n azurescript_Nsg_Rule1 --priority 100 \
+--source-address-prefixces '*' --source-port-ranges '*' --destination-address-prefixces '*' \
+--destination-port-ranges '*' --access Allow --protocol Tcp --description "Allowing All Traffic"
+
+
+az network nsg rule create -g azurescript --nsg-name azurescript-Nsg -n MyNsgRuleWithTags \
+    --priority 400 --source-address-prefixes VirtualNetwork --destination-address-prefixes Storage \
+    --destination-port-ranges '*' --direction Outbound --access Allow --protocol Tcp --description "Allow VirtualNetwork to Storage."
+
+###########Availability set#####################
+az vm availability-set create --name azurescript-vm1 -g azurescript --location eastus
+
+##############Linux virtual machine#####################
+az vm create --resource-group azurescript --name mylinuxmachine --image ubuntuLTS --vnet-name azurescript-Vnet1 \
+subnet azurescript-subnet1 --admin-username india --admin-pasword "india@12345" --size standard_B1ms \
+--nsg azurescript-Nsg
+
+
+
+Code .(visual studio code opening)
+touch azuretest.sh(file creation)
+./azuretest.sh(
+chmod 777 azuretest.sh
+
+
+
+
+
+--------------------------------------------------------------------------------
+How to deploy vm using CLI(command line interface,shell scripting,power shell)
